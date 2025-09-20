@@ -3,159 +3,225 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Oshaq Naimat</title>
-    <!-- Bootstrap CSS CDN -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <!-- Google Fonts - Inter -->
+    <title>My Portfolio</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Font - Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
+     <link rel="shortcut icon" href="https://cdn.iconscout.com/icon/free/png-256/free-react-icon-svg-download-png-282599.png?f=webp" type="image/x-icon">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="shortcut icon" href="https://static.tildacdn.one/tild3236-3737-4537-a133-663932633034/React.svg" type="image/x-icon">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #212529; /* Bootstrap's bg-dark equivalent to Tailwind's bg-gray-900 */
-            color: #f8f9fa; /* Bootstrap's text-light equivalent to Tailwind's text-gray-100 */
+            color: #e2e8f0;
+            overflow-x: hidden; /* Prevents horizontal scroll from animations */
         }
 
-        /* Smooth scrolling for internal links */
-        html {
-            scroll-behavior: smooth;
+        /* Full-screen background video styles */
+        #background-video {
+            position: fixed;
+            right: 0;
+            bottom: 0;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            z-index: -2;
+            background-size: cover;
+        }
+        
+        /* Dark overlay for better text readability */
+        .video-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6); /* Adjust opacity here */
+            z-index: -1;
         }
 
-        /* Custom class for the animation effect */
-        .fade-in-section {
+        /* Custom Keyframe Animations */
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .fade-in-down {
+            animation: fadeInDown 0.8s ease-out forwards;
+        }
+
+        .fade-in-up {
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+        
+        .float {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        /* Responsive hamburger menu */
+        #mobile-menu {
+            transition: transform 0.3s ease-in-out;
+            transform: translateY(-100%);
+        }
+        #mobile-menu.open {
+            transform: translateY(0);
+        }
+        
+        /* Scroll reveal effect */
+        .reveal {
             opacity: 0;
             transform: translateY(20px);
-            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-            will-change: opacity, transform;
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
         }
-
-        .fade-in-section.is-visible {
+        .reveal.visible {
             opacity: 1;
             transform: translateY(0);
         }
-
-        /* Custom gradient text for the brand name */
-        .gradient-text {
-            background: linear-gradient(to right, #14b8a6, #0d9488); /* Teal-400 to Teal-600 */
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-
-        /* Hover effect for nav links */
-        .nav-link:hover {
-            color: #ffffff !important; /* Bootstrap override for hover */
-        }
     </style>
 </head>
-<body>
+<body class="bg-gray-900 text-gray-200 relative">
 
-    <!-- Navigation Bar -->
-    <header class="fixed-top w-100 bg-dark bg-opacity-75 shadow-lg" style="backdrop-filter: blur(4px);">
-        <nav class="container py-3 d-flex justify-content-between align-items-center">
-            <a href="#" class="fs-3 fw-bold gradient-text">Oshaq Naimat</a>
-            <div class="d-flex align-items-center">
-                <button class="btn d-block d-md-none me-3" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu" aria-controls="navMenu" aria-expanded="false" aria-label="Toggle navigation">
-                    <i class="bi bi-list gradient-text d-lg-none" style="font-size: 1.8rem;"></i>
-                </button>
-                <div class="collapse d-md-flex gap-3" id="navMenu">
-                    <a href="#about" class="nav-link text-light d-none d-md-block">About</a>
-                    <a href="#projects" class="nav-link text-light d-none d-md-block">Projects</a>
-                    <a href="#skills" class="nav-link text-light d-none d-md-block">Skills</a>
-                    <a href="#contact" class="nav-link text-light d-none d-md-block">Contact</a>
-                    <!-- Mobile menu items -->
-                    <div class="d-md-none d-flex flex-column gap-2 mt-2">
-                        <a href="#about" class="nav-link text-light">About</a>
-                        <a href="#projects" class="nav-link text-light">Projects</a>
-                        <a href="#skills" class="nav-link text-light">Skills</a>
-                        <a href="#contact" class="nav-link text-light">Contact</a>
-                    </div>
-                </div>
+    <!-- Background Video and Overlay -->
+    <video autoplay loop muted playsinline id="background-video">
+        <source src="bg-video.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+    <div class="video-overlay"></div>
+
+    <!-- Header & Navigation -->
+    <header class="bg-slate-900/50 backdrop-blur-sm fixed top-0 w-full z-50 transition-all duration-300">
+        <nav class="container mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+            <a href="#hero" class="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-600 animate-pulse">My Portfolio</a>
+            
+            <!-- Desktop Navigation -->
+            <div class="hidden md:flex space-x-8 text-lg">
+                <a href="#about" class="hover:text-blue-400 transition-colors duration-300">About</a>
+                <a href="#projects" class="hover:text-blue-400 transition-colors duration-300">Projects</a>
+                <a href="#contact" class="hover:text-blue-400 transition-colors duration-300">Contact</a>
             </div>
+            
+            <!-- Mobile Menu Button -->
+            <button id="mobile-menu-button" class="md:hidden text-gray-200 focus:outline-none">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                </svg>
+            </button>
         </nav>
+        
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="md:hidden absolute top-16 left-0 w-full bg-slate-800/90 text-center shadow-lg transition-transform duration-300">
+            <div class="flex flex-col space-y-4 py-4 text-xl">
+                <a href="#about" class="hover:text-blue-400 transition-colors duration-300 py-2">About</a>
+                <a href="#projects" class="hover:text-blue-400 transition-colors duration-300 py-2">Projects</a>
+                <a href="#contact" class="hover:text-blue-400 transition-colors duration-300 py-2">Contact</a>
+            </div>
+        </div>
     </header>
 
-    <main class="container px-3 px-sm-4 px-lg-5">
-
-        <!-- About Me Section -->
-        <section id="about" class="pt-5 pb-4 min-vh-100 d-flex align-items-center justify-content-center">
-            <div class="text-center">
-                <img src="https://raw.githubusercontent.com/dorianpro/kaliwallpapers/master/kali-linux-wallpaper-v7.png" alt="Profile Photo" class="rounded-circle mx-auto mb-4" style="width: 128px; height: 128px; object-fit: cover; border: 4px solid #343a40;">
-                <h1 class="display-4 fw-bold mb-4">Hello, I'm <span class="gradient-text">Oshaq Naimat</span>.</h1>
-                <p class="lead text-secondary mb-4 mx-auto" style="max-width: 672px;">
-                    I'm a passionate web developer with a knack for building beautiful and functional applications. I specialize in front-end and back-end technologies and enjoy solving complex problems.
-                </p>
-                <a href="#projects" class="btn btn-primary btn-lg rounded-pill shadow">View My Work</a>
+    <main class="py-24 relative z-10">
+        
+        <!-- Hero Section -->
+        <section id="hero" class="min-h-screen flex items-center justify-center p-4">
+            <div class="container mx-auto flex flex-col md:flex-row items-center justify-center text-center md:text-left space-y-8 md:space-y-0 md:space-x-12">
+                
+                <!-- Hero Content -->
+                <div class="fade-in-down">
+                    <h1 class="text-5xl md:text-6xl font-extrabold leading-tight text-white mb-4">
+                        Hello, I'm <span class="text-blue-400">Oshaq Naimat</span>.
+                    </h1>
+                    <p class="text-xl md:text-2xl text-gray-300 mb-8">
+                        A passionate <span class="font-bold text-purple-400">Web Developer</span> with a love for creating beautiful and functional web applications.
+                    </p>
+                    <a href="#contact" class="px-8 py-3 bg-blue-500 hover:bg-blue-600 text-white font-bold rounded-full shadow-lg transition-all duration-300 transform hover:scale-105">
+                        Get in Touch
+                    </a>
+                </div>
+                
+                <!-- Placeholder Image/Illustration -->
+                <div class="float mt-8 md:mt-0 fade-in-up">
+                    <div class="w-64 h-64 md:w-80 md:h-80 rounded-full bg-slate-700 overflow-hidden shadow-2xl flex items-center justify-center">
+                        <!-- Placeholder SVG for a profile image -->
+                        <svg class="w-48 h-48 text-gray-500" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"></path>
+                        </svg>
+                    </div>
+                </div>
             </div>
         </section>
 
+        <!-- About Section -->
+        <section id="about" class="bg-transparent py-20 reveal">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="text-4xl font-bold text-center text-blue-400 mb-12">About Me</h2>
+                <div class="max-w-4xl mx-auto text-lg text-gray-300 text-center leading-relaxed space-y-4">
+                    <p class="reveal">
+                        I am a full-stack web developer with a passion for building robust and scalable websites. My expertise lies in front-end development using modern frameworks like React and Vue, as well as back-end development with Node.js and MongoDB I love turning complex problems into simple, beautiful, and intuitive designs.
+                    </p>
+                    <p class="reveal">
+                        Outside of coding, I enjoy to do workout in gym and exploring new technologies. I believe in continuous learning and always strive to improve my skills to deliver exceptional results.
+                    </p>
+                </div>
+            </div>
+        </section>
+        
         <!-- Projects Section -->
-        <section id="projects" class="py-4 fade-in-section">
-            <h2 class="display-5 fw-bold text-center mb-5">My Projects</h2>
-            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-                <!-- Project Card 1 -->
-                <div class="col">
-                    <div class="card bg-dark text-light shadow-lg h-100">
-                        <img src="./portfolio project1.png" alt="Project 1" class="card-img-top rounded">
-                        <div class="card-body">
-                            <h3 class="card-title fs-5 text-info">Youtube Clone</h3>
-                            <p class="card-text text-secondary">Basically, it is the clone of YouTube but there are some different features from actual YouTube. Presently, it is not completed. I am working on it.</p>
-                            <a href="#" class="text-info text-decoration-none">View Project &rarr;</a>
-                        </div>
+        <section id="projects" class="bg-transparent py-20 reveal">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="text-4xl font-bold text-center text-blue-400 mb-12">My Projects</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    
+                    <!-- Project Card 1 -->
+                    <div class="bg-gray-800/70 backdrop-blur-sm rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow duration-300 reveal">
+                        <img src="https://placehold.co/600x400/1e293b/94a3b8?text=Project+1" alt="Project 1" class="rounded-lg mb-4 w-full h-auto">
+                        <h3 class="text-2xl font-semibold mb-2 text-white">Project Name</h3>
+                        <p class="text-gray-400 mb-4">A brief description of the project, including technologies used like React, Node.js, and MongoDB.</p>
+                        <a href="#" class="inline-block px-4 py-2 bg-purple-500 hover:bg-purple-600 text-white font-semibold rounded-full text-sm">View Project</a>
                     </div>
-                </div>
-                <!-- Project Card 2 -->
-                <div class="col">
-                    <div class="card bg-dark text-light shadow-lg h-100">
-                        <img src="./portfolio project2.png" alt="Project 2" class="card-img-top rounded">
-                        <div class="card-body">
-                            <h3 class="card-title fs-5 text-info">Arsha Bootstrap</h3>
-                            <p class="card-text text-secondary">This site is totally responsive. Bootstrap classes are used in it.</p>
-                            <a href="https://oshaqnaimat.github.io/Arsha/" class="text-info text-decoration-none">View Project &rarr;</a>
-                        </div>
+                    
+                    <!-- Project Card 2 -->
+                    <div class="bg-gray-800/70 backdrop-blur-sm rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow duration-300 reveal">
+                        <img src="https://placehold.co/600x400/1e293b/94a3b8?text=Project+2" alt="Project 2" class="rounded-lg mb-4 w-full h-auto">
+                        <h3 class="text-2xl font-semibold mb-2 text-white">Another Project</h3>
+                        <p class="text-gray-400 mb-4">A description of this project, highlighting key features and the problem it solves.</p>
+                        <a href="#" class="inline-block px-4 py-2 bg-purple-500 hover:bg-purple-600 text-white font-semibold rounded-full text-sm">View Project</a>
                     </div>
-                </div>
-                <!-- Project Card 3 -->
-                <div class="col">
-                    <div class="card bg-dark text-light shadow-lg h-100">
-                        <img src="./portfolio project3.png" alt="Project 3" class="card-img-top rounded">
-                        <div class="card-body">
-                            <h3 class="card-title fs-5 text-info">Simplex Website</h3>
-                            <p class="card-text text-secondary">Presently, it is not completed. I have made half website of Simplex and in this website I have used media queries for responsiveness.</p>
-                            <a href="https://oshaqnaimat.github.io/simplex/" class="text-info text-decoration-none">View Project &rarr;</a>
-                        </div>
+                    
+                    <!-- Project Card 3 -->
+                    <div class="bg-gray-800/70 backdrop-blur-sm rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow duration-300 reveal">
+                        <img src="https://placehold.co/600x400/1e293b/94a3b8?text=Project+3" alt="Project 3" class="rounded-lg mb-4 w-full h-auto">
+                        <h3 class="text-2xl font-semibold mb-2 text-white">Third Project</h3>
+                        <p class="text-gray-400 mb-4">An overview of this project, focusing on the design and user experience aspects.</p>
+                        <a href="#" class="inline-block px-4 py-2 bg-purple-500 hover:bg-purple-600 text-white font-semibold rounded-full text-sm">View Project</a>
                     </div>
-                </div>
-            </div>
-        </section>
 
-        <!-- Skills Section -->
-        <section id="skills" class="py-4 fade-in-section mb-4">
-            <h2 class="display-5 fw-bold text-center mb-5">My Skills</h2>
-            <div class="d-flex flex-wrap justify-content-center gap-3">
-                <span class="badge bg-dark text-info px-3 py-2 rounded-pill shadow">HTML5</span>
-                <span class="badge bg-dark text-info px-3 py-2 rounded-pill shadow">CSS3</span>
-                <span class="badge bg-dark text-info px-3 py-2 rounded-pill shadow">Bootstrap</span>
-                <span class="badge bg-dark text-info px-3 py-2 rounded-pill shadow">JavaScript</span>
-                <span class="badge bg-dark text-info px-3 py-2 rounded-pill shadow">PHP</span>
+                </div>
             </div>
         </section>
 
         <!-- Contact Section -->
-        <section id="contact" class="py-4 fade-in-section mt-5">
-            <h2 class="display-5 fw-bold text-center mb-4">Get In Touch</h2>
-            <div class="text-center">
-                <p class="text-secondary mb-4 mx-auto" style="max-width: 672px;">
-                    I'm always open to new opportunities and collaborations. Feel free to reach out to me via email or connect with me on social media.
+        <section id="contact" class="bg-transparent py-20 reveal">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <h2 class="text-4xl font-bold text-blue-400 mb-8">Contact Me</h2>
+                <p class="text-lg text-gray-300 max-w-2xl mx-auto mb-8">
+                    Have a question or want to collaborate on a project? Feel free to reach out. I'd love to hear from you!
                 </p>
-                <div class="d-flex flex-wrap justify-content-center gap-3">
-                    <a id="emailBtn" class="btn btn-primary btn-lg rounded-pill shadow">Email Me</a>
-                    <a href="https://github.com/OshaqNaimat" class="btn btn-primary btn-lg rounded-pill shadow">Github</a>
-                    <a href="https://www.linkedin.com/in/oshaq-naimat-14347336a" class="btn btn-primary btn-lg rounded-pill shadow">Linkedin</a>
-                    <a href="https://www.instagram.com/oshaq_naimat/" class="btn btn-primary btn-lg rounded-pill shadow">Instagram</a>
+                
+                <div class="flex justify-center space-x-6">
+                    <a href="mailto:youremail@example.com" class="px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white font-bold rounded-lg shadow-lg transition-all duration-300 transform hover:scale-105">
+                        Send an Email
+                    </a>
                 </div>
             </div>
         </section>
@@ -163,42 +229,54 @@
     </main>
 
     <!-- Footer -->
-    <footer class="bg-dark text-center py-4 mt-5">
-        <p class="text-secondary small">&copy; 2025 Oshaq Naimat. All rights reserved.</p>
+    <footer class="bg-gray-900/50 backdrop-blur-sm py-8 text-center text-gray-400 text-sm">
+        <p>&copy; 2023 Alex. All rights reserved.</p>
     </footer>
 
-    <!-- Bootstrap JS and Popper.js CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
-    <!-- JavaScript for scroll-triggered animations and email button -->
     <script>
-        const fadeInSections = document.querySelectorAll('.fade-in-section');
+        // Smooth scroll for internal links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
 
-        const observerOptions = {
-            root: null,
-            rootMargin: '0px',
-            threshold: 0.25
-        };
+        // Mobile menu toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('open');
+        });
 
-        const observer = new IntersectionObserver((entries, observer) => {
+        // Close mobile menu on link click
+        document.querySelectorAll('#mobile-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.remove('open');
+            });
+        });
+
+        // Scroll animations
+        const revealElements = document.querySelectorAll('.reveal');
+
+        const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
-                    entry.target.classList.add('is-visible');
+                    entry.target.classList.add('visible');
                     observer.unobserve(entry.target);
                 }
             });
-        }, observerOptions);
-
-        fadeInSections.forEach(section => {
-            observer.observe(section);
+        }, {
+            threshold: 0.1, // Trigger when 10% of the element is visible
         });
 
-        document.getElementById("emailBtn").addEventListener("click", function() {
-            const user = "oshaqnaimat15";
-            const domain = "gmail.com";
-            const gmailLink = `https://mail.google.com/mail/?view=cm&fs=1&to=${user}@${domain}`;
-            window.open(gmailLink, "_blank");
+        revealElements.forEach(el => {
+            observer.observe(el);
         });
+
     </script>
 </body>
 </html>
